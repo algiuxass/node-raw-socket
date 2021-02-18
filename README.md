@@ -3,6 +3,18 @@
 
 This module implements raw sockets for [Node.js][nodejs].
 
+## This fork includes a really quick and dirty fix:
+I wanted to listen for ICMP packets, but node.js kept closing up.
+I found garbage collector is cleaning up variables which it shouldn't.
+It's a really quick and **dirty** fix:
+```js
+var gcFix = setInterval(()=>this.wrap, 2147483647).unref();
+this.wrap.on('close', ()=>clearInterval(gcFix));
+```
+Owner maintainer said he won't merge it, so there's no fix for it now.
+See this:
+https://github.com/nospaceships/node-raw-socket/issues/70
+
 *This module has been created primarily to facilitate implementation of the
 [net-ping][net-ping] module.*
 
